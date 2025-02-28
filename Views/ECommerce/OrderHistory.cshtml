@@ -1,0 +1,59 @@
+@model List<Order>
+
+<h2>Order History</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderID</td>
+                <td>@order.OrderDate.ToShortDateString()</td>
+                <td>$@order.OrderDetails.Sum(d => d.SubTotal)</td>
+                <td>
+                    <!-- View details button -->
+                    <a asp-controller="Ecommerce" asp-action="OrderHistory" asp-route-orderId="@order.OrderID" class="btn btn-info">View Details</a>
+                </td>
+            </tr>
+
+            @if (ViewData["OrderID"] != null && (int)ViewData["OrderID"] == order.OrderID)
+            {
+                <tr>
+                    <td colspan="4">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var detail in order.OrderDetails)
+                                {
+                                    <tr>
+                                        <td>@detail.Product.Name</td>
+                                        <td>@detail.Quantity</td>
+                                        <td>@detail.Product.Price</td>
+                                        <td>@detail.SubTotal</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Index", "Ecommerce")" class="btn btn-primary">Back to Product List</a>

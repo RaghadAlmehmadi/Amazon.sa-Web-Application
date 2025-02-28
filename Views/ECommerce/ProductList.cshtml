@@ -1,0 +1,30 @@
+@model List<Product>
+
+<h2>Product List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Order</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Category</td>
+                <td>@product.Price</td>
+                <td>@product.StockQuantity</td>
+                <td>
+                    <!-- Order button that passes productId -->
+                    <a asp-controller="Ecommerce" asp-action="PlaceOrder" asp-route-productId="@product.ProductID" class="btn btn-primary">Order</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
